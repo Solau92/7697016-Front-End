@@ -35,3 +35,37 @@ for (let i = 0; i < pieces.length; i++) {
     pieceElement.appendChild(stockElement);
 
  }
+
+const boutonTrierCroissant = document.querySelector(".btn-trier-croissant");
+boutonTrierCroissant.addEventListener("click", function () {
+    const piecesOrdonneesCroissant = Array.from(pieces);
+    piecesOrdonneesCroissant.sort(function (a, b) {
+        return a.prix - b.prix;
+    });
+    console.log(piecesOrdonneesCroissant);
+});
+
+const boutonTrierDecroissant = document.querySelector(".btn-trier-decroissant");
+boutonTrierDecroissant.addEventListener("click", function () {
+    const piecesOrdonneesDeroissant = Array.from(pieces);
+    piecesOrdonneesDeroissant.sort(function (a, b) {
+        return b.prix - a.prix;
+    });
+    console.log(piecesOrdonneesDeroissant);
+});
+
+const boutonFiltrerAbordable = document.querySelector(".btn-filtrer-abordable");
+boutonFiltrerAbordable.addEventListener("click", function () {
+   const piecesFiltreesAbordable = pieces.filter(function (piece) {
+       return piece.prix <= 35;
+   });
+   console.log(piecesFiltreesAbordable);
+});
+
+const boutonFiltrerDescription = document.querySelector(".btn-filtrer-description");
+boutonFiltrerDescription.addEventListener("click", function () {
+   const piecesFiltreesDescription = pieces.filter(function (piece) {
+       return piece.description
+   });
+   console.log(piecesFiltreesDescription);
+});
