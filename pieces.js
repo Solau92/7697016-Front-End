@@ -2,7 +2,8 @@
 const reponse = await fetch("pieces-autos.json");
 const pieces = await reponse.json();
 
-// Parcours de la liste des pièces 
+// Fonction générer pièces 
+function genererPieces(pieces) {
 for (let i = 0; i < pieces.length; i++) {
 
     const article = pieces[i];
@@ -34,8 +35,11 @@ for (let i = 0; i < pieces.length; i++) {
     //Ajout des éléments au DOM pour l'exercice
     pieceElement.appendChild(descriptionElement);
     pieceElement.appendChild(stockElement);
-
  }
+}
+
+ // Affichage initial de la page
+ genererPieces(pieces);
 
  // Boutons trier 
 const boutonTrierCroissant = document.querySelector(".btn-trier-croissant");
@@ -44,16 +48,18 @@ boutonTrierCroissant.addEventListener("click", function () {
     piecesOrdonneesCroissant.sort(function (a, b) {
         return a.prix - b.prix;
     });
-    console.log(piecesOrdonneesCroissant);
+    document.querySelector(".fiches").innerHTML = "";
+    genererPieces(piecesOrdonneesCroissant);
 });
 
 const boutonTrierDecroissant = document.querySelector(".btn-trier-decroissant");
 boutonTrierDecroissant.addEventListener("click", function () {
-    const piecesOrdonneesDeroissant = Array.from(pieces);
-    piecesOrdonneesDeroissant.sort(function (a, b) {
+    const piecesOrdonneesDecroissant = Array.from(pieces);
+    piecesOrdonneesDecroissant.sort(function (a, b) {
         return b.prix - a.prix;
     });
-    console.log(piecesOrdonneesDeroissant);
+    document.querySelector(".fiches").innerHTML = "";
+    genererPieces(piecesOrdonneesDecroissant);
 });
 
  // Boutons filtrer 
@@ -62,7 +68,8 @@ boutonFiltrerAbordable.addEventListener("click", function () {
    const piecesFiltreesAbordable = pieces.filter(function (piece) {
        return piece.prix <= 35;
    });
-   console.log(piecesFiltreesAbordable);
+   document.querySelector(".fiches").innerHTML = "";
+   genererPieces(piecesFiltreesAbordable);
 });
 
 const boutonFiltrerDescription = document.querySelector(".btn-filtrer-description");
@@ -70,7 +77,8 @@ boutonFiltrerDescription.addEventListener("click", function () {
    const piecesFiltreesDescription = pieces.filter(function (piece) {
        return piece.description
    });
-   console.log(piecesFiltreesDescription);
+   document.querySelector(".fiches").innerHTML = "";
+   genererPieces(piecesFiltreesDescription);
 });
 
 // Liste des noms des pièces abordables
