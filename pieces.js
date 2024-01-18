@@ -1,10 +1,12 @@
-import { ajoutListenersAvis } from "./avis.js";
+import { ajoutListenersAvis, ajoutListenerEnvoyerAvis } from "./avis.js";
 
 // Récupération des pièces depuis le fichier Json local
 // const reponse = await fetch("pieces-autos.json");
 // Récupération des pièces depuis l'API
 const reponse = await fetch('http://localhost:8081/pieces/');
 const pieces = await reponse.json();
+// Ajout de du listener au formulaire d'envoi d'avis
+ajoutListenerEnvoyerAvis();
 
 // Fonction générer pièces 
 function genererPieces(pieces) {
@@ -135,7 +137,7 @@ document.querySelector('.disponibles')
 
 // Range
 const pElementDisponible = document.createElement('p')
-pElementDisponible.innerText = "Pièces disponibles:";
+// pElementDisponible.innerText = "Pièces disponibles:";
 document.querySelector('.disponibles').appendChild(pElementDisponible).appendChild(disponiblesElements)
 
 const inputPrixMax = document.querySelector('#prix-max');
