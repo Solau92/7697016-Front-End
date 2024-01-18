@@ -1,10 +1,24 @@
-import { ajoutListenersAvis, ajoutListenerEnvoyerAvis } from "./avis.js";
+import { ajoutListenersAvis, ajoutListenerEnvoyerAvis, affichageAvis } from "./avis.js";
 
-// Récupération des pièces depuis le fichier Json local
-// const reponse = await fetch("pieces-autos.json");
-// Récupération des pièces depuis l'API
-const reponse = await fetch('http://localhost:8081/pieces/');
-const pieces = await reponse.json();
+// Récupération des pièces éventuellement stockées dans le localStorage
+let pieces = window.localStorage.getItem('pieces');
+
+if (pieces === null) {
+
+    // Récupération des pièces depuis le fichier Json local
+    // const reponse = await fetch("pieces-autos.json");
+    // Récupération des pièces depuis l'API
+    const reponse = await fetch('http://localhost:8081/pieces/');
+    pieces = await reponse.json();
+
+    // Transformation des pièces en JSON
+    const valeurPieces = JSON.stringify(pieces);
+    // Stockage des informations dans le localStorage
+    window.localStorage.setItem("pieces", valeurPieces);
+} else {
+    pieces = JSON.parse(pieces);
+}
+
 // Ajout de du listener au formulaire d'envoi d'avis
 ajoutListenerEnvoyerAvis();
 
@@ -50,6 +64,17 @@ function genererPieces(pieces) {
 
 // Affichage initial de la page
 genererPieces(pieces);
+
+for(let i = 0 ; i < pieces.length ; i++) {
+    const id = pieces[i].id;
+    const avisJSON = window.localStorage.getItem(`avis-piece-${id}`);
+    const avis = JSON.parse(avisJSON);
+
+    if(avis !== null) {
+        const pieceElement = document.querySelector(`article[data-id="${id}"]`);
+        affichageAvis(pieceElement, avis);
+    }
+}
 
 // Boutons trier 
 const boutonTrierCroissant = document.querySelector(".btn-trier-croissant");
@@ -148,3 +173,9 @@ inputPrixMax.addEventListener('input', function () {
     document.querySelector(".fiches").innerHTML = "";
     genererPieces(pieceFiltrees);
 })
+
+// Bouton de mise à jour des données du localStorage
+const boutonMettreAJour = document.querySelector(".btn-maj");
+boutonMettreAJour.addEventListener("click", function() {
+    window.localStorage.removeItem("pieces");
+});
